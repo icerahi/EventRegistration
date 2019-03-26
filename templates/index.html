@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+            {% if success %}
+                <div class="notification is-success">
+                    আপনার রেজিস্ট্রেশন টি সফল হয়েছে
+                </div>
+                {% include "card.html" %}
+            {% endif %}
+
+
+
+
+            {% if  error %}
+                <div class="notification is-danger">
+                    অনুগ্রহ করে ফর্মটি সঠিক ভাবে পূরণ করুন।
+                </div>
+            {% endif %}
+
+
+            {% if not success %}
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="field">
+                        <label class="label"> নাম</label>
+                        <div class="control">
+                            <input class="input{% if error.name %} is-danger{% endif %}" name="name" value="{{ request.POST.name }}" type="text" placeholder="আপনার পূর্ণ নাম" required>
+                        </div>
+                        {% if error.name %}
+                        <p class="help is-danger">{{ error.name }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="field">
+                        <label class="label">ইমেইল </label>
+                        <div class="control has-icons-left has-icons-right">
+                            <input class="input {% if error.email %}is-danger{% endif %}" name="email" value="{{ request.POST.email}}" type="email" placeholder="ইমেইল ঠিকানা"  required>
+                            <span class="icon is-small is-left"><i class="fas fa-envelope"></i></span>
+                            <span class="icon is-small is-right"><i class="fas fa-exclamation-triangle"></i></span>
+                        </div>
+                        {% if error.email %}
+                        <p class="help is-danger"> {{ error.email }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="field">
+                        <label class="label">মোবাইল নম্বর</label>
+                        <div class="control has-icons-left has-icons-right">
+                            <input type="text" name="phone" class="input {% if error.phone %}is-danger{% endif %}" value="{{ request.POST.phone }}" placeholder="মোবাইল ফোন নম্বর" required>
+                            <span class="icon is-small is-left"><i class="fas fa-phone"></i></span>
+                        </div>
+                        {% if error.phone %}
+                        <p class="help is-danger">{{ error.phone }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="field">
+                        <div class="control">
+                            <label class="checkbox">
+                                <input type="checkbox" name="agree" required>
+                                আমি সকল নিয়ম কানুন ও শর্তাবলী মেনে নিচ্ছি।
+                            </label>
+                        </div>
+                        {% if error.agree %}
+                        <p class="help is-danger"> {{ error.agree }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="field is-grouped">
+                        <div class="control">
+                            <button class="button is-link"> ঠিক আছে</button>
+                        </div>
+                        <div class="control">
+                            <button class="button is-danger"> বাতিল</button>
+                        </div>
+                    </div>
+                </form>
+
+            {% endif %}
+
+{% endblock %}
